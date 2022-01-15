@@ -1,0 +1,401 @@
+﻿@model ClientViewModel
+@{
+    ViewData["Title"] = (Model.Id == null ? SharedLocalizer["Add"].Value : SharedLocalizer["Edit"].Value);
+    var extensionsAll = "jpeg, jpg, png";
+    var extensions = extensionsAll.Split(",").Select(x => x.Trim()).ToArray();
+}
+
+
+@section Styles{
+    <!-- Select2 -->
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
+    <!-- bootstrap datetimepicker -->
+    <link href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <!-- File Input-->
+    <link href="~/lib/fileinput/css/fileinput.min.css" rel="stylesheet" />
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link href="~/lib/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="col-sm-12 breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">@SharedLocalizer["Home"]</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">@SharedLocalizer["Clients"]</a></li>
+                    @if (Model.Id == null)
+                    {
+                        <li class="breadcrumb-item active">@SharedLocalizer["Add"]</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@Model.Id">@Model.Name @Model.Surname</a></li>
+                        <li class="breadcrumb-item active">@SharedLocalizer["Edit"]</li>
+                    }
+
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-9" id="left-side-bar">
+                <!-- jquery validation -->
+                <div class="card @(Model.Id == null ? "card-primary" : "card-warning")">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa @(Model.Id == null ? "fa-plus" : "fa-edit")"></i> &nbsp;&nbsp; @(Model.Id == null ? "" : SharedLocalizer["EditClient"].Value)</h3>
+                        <span id="close" style="float:right" class="hidden-sm hidden-xs">
+                            <span id="expand">@SharedLocalizer["CloseHelp"]</span>
+                            <i class="fa fa-chevron-right" id="icon-expand" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form id="ClientForm" asp-action="Add" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" value="@Model.Id" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["Name"] *</label>
+                                        <div class="input-group">
+                                            <input type="text" asp-for="Name" data-title="@SharedLocalizer["ClientNameTitle"]" data-description="@SharedLocalizer["ClientNameDescription"]" class="form-control help-sidebar" placeholder="@SharedLocalizer["EnterName"]">
+                                            <div class="input-group-append ">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["Surname"] *</label>
+                                        <div class="input-group">
+                                            <input type="text" asp-for="Surname" data-title="@SharedLocalizer["ClientSurNameTitle"]" data-description="@SharedLocalizer["ClientSurNameDescription"]" class="form-control help-sidebar" placeholder="@SharedLocalizer["EnterSurname"]">
+                                            <div class="input-group-append ">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["Email"] *</label>
+                                        <div class="input-group">
+                                            <input type="email" asp-for="Email" data-title="@SharedLocalizer["ClientEmailTitle"]" data-description="@SharedLocalizer["ClientEmailDescription"]" class="form-control help-sidebar" placeholder="@SharedLocalizer["EnterEmail"]">
+                                            <div class="input-group-append ">
+                                                <span class="input-group-text"><i class="fa fa-at"></i></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["PhoneNumber"] </label>
+                                        <div class="input-group">
+                                            <input type="text" asp-for="PhoneNumber" class="form-control help-sidebar" placeholder="@SharedLocalizer["EnterPhoneNumber"]" data-title="@SharedLocalizer["ClientPhoneNumberTitle"]" data-description="@SharedLocalizer["ClientPhoneNumberDescription"]" />
+                                            <div class="input-group-append ">
+                                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["Password"] *</label>
+                                        <div class="input-group">
+                                            <input type="password" asp-for="Password" class="form-control help-sidebar" placeholder="@SharedLocalizer["EnterPassword"]" data-title="@SharedLocalizer["ClientPasswordTitle"]" data-description="@SharedLocalizer["ClientPasswordDescription"]" />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text"><i class="fa fa-lock"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["ConfirmPassword"] *</label>
+                                        <div class="input-group">
+                                            <input type="password" asp-for="ConfirmPassword" class="form-control help-sidebar" placeholder="@SharedLocalizer["EnterConfirmPassword"]" data-title="@SharedLocalizer["ClientConfirmPasswordTitle"]" data-description="@SharedLocalizer["ClientConfirmPasswordDescription"]" />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text"><i class="fa fa-lock"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group help-sidebar" data-title="@SharedLocalizer["ClientGenderTitle"]" data-description="@SharedLocalizer["ClientGenderDescription"]">
+                                        <label>@SharedLocalizer["Gender"] </label>
+                                        <div class="input-group">
+                                            <select class="genders form-control help-sidebar" asp-for="Gender" asp-items="@Model.Genders" data-placeholder="@SharedLocalizer["SelectGender"]" style="width: 100%;">
+                                            </select>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text"><i class="fa fa-mars"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["Birthday"] </label>
+                                        <div class="input-group date" id="startD">
+                                            <input type="text" asp-for="Birthday" id="Birthday" readonly class="form-control help-sidebar" placeholder="@SharedLocalizer["EnterBirthday"]" data-title="@SharedLocalizer["ClientBirthdayTitle"]" data-description="@SharedLocalizer["ClientBirthdayDescription"]" />
+                                            <div class="input-group-append ">
+                                                <span class="input-group-text"><i id="sCalendar" class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["IsActive"]</label>
+                                        <div class="input-group">
+                                            <input type="checkbox" data-title="@SharedLocalizer["ClientIsActiveTitle"]" data-description="@SharedLocalizer["ClientIsActiveDescription"]" asp-for="IsActive" data-toggle="switchbutton" data-size="xs" data-onlabel="@SharedLocalizer["Yes"]" data-offlabel="@SharedLocalizer["No"]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <div class="pull-right">
+                                <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+                                <button type="submit" class="btn @(Model.Id == null ? "btn-primary" : "btn-warning")"><i class="fa fa-save"></i> &nbsp;&nbsp;@SharedLocalizer["Save"]</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-3 navbar-right hidden-sm hidden-xs help-bar remove-left-padding" id="right-sidebar">
+                <div class="card @(Model.Id==null ? "card-primary" : "card-warning")">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa fa-info"></i><span style="margin-left:15px" id="title">@SharedLocalizer["QuickHelp"]</span></h3>
+                    </div>
+                    <div class="card-body">
+                        <p id="description">
+                            @(Model.Id == null ? @SharedLocalizer["ClientAddForm"] : @SharedLocalizer["ClientEditForm"])
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    <!-- Jquery Validation -->
+    <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/additional-methods.min.js"></script>
+    <!-- Select2 -->
+    <script src="~/lib/select2/js/select2.full.min.js"></script>
+    <!-- bs-custom-file-input -->
+    @*<script src="~/lib/bs-custom-file-input/bs-custom-file-input.min.js"></script*@
+    <!-- bootstrap datetimepicker -->
+    <script src="~/lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <!-- File Input -->
+    <script src="~/lib/fileinput/js/fileinput.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            if ("@Model.Id" == "null") {
+                //$("#Price").val("");
+                //$("#MinimumAge").val("");
+            }
+
+            $.validator.addMethod("regex",function (value, element, regexp) {
+                var re = new RegExp(regexp);
+                return this.optional(element) || re.test(value);
+            }, "@SharedLocalizer["PasswordError"]");
+
+            $.validator.addMethod("regexEmail", function (value, element, regexp) {
+                var re = new RegExp(regexp);
+                return this.optional(element) || re.test(value);
+            },"@SharedLocalizer["EmailError"]")
+
+            $('#ClientForm').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 3,
+                    },
+                    Surname: {
+                        required: true,
+                        minlength: 3,
+                    },
+                    Email: {
+                        required: true,
+                        email: true,
+                    },
+                    Password: {
+                        required: true,
+                        minlength: 8,
+                        regex: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@@$%^&*-]).{8,}$"
+                    },
+                    ConfirmPassword: {
+                        required: true,
+                        minlength: 8,
+                        equalTo: "#Password",
+                    },
+                },
+                messages: {
+                    Name: {
+                        required: "@SharedLocalizer["FieldRequired"]",
+                        minlength: "@SharedLocalizer["MinLength3"]"
+                    },
+                    Surname: {
+                        required: "@SharedLocalizer["FieldRequired"]",
+                        minlength: "@SharedLocalizer["MinLength3"]"
+                    },
+                    Email: {
+                        required: "@SharedLocalizer["FieldRequired"]",
+                        email: "@SharedLocalizer["EmailInvalidFormat"]",
+                    },
+                    Password: {
+                        required: "@SharedLocalizer["FieldRequired"]",
+                        minlength: "@SharedLocalizer["MinLength8"]",
+                        regex: "@SharedLocalizer["PasswordInvalidFormat"]"
+                    },
+                    ConfirmPassword: {
+                        required: "@SharedLocalizer["FieldRequired"]",
+                        minlength: "@SharedLocalizer["MinLength8"]",
+                        equalTo: "@SharedLocalizer["PasswordNotMatch"]",
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+
+            // DateTime Picker
+            $('#Birthday').datetimepicker({
+                format: 'dd/mm/yyyy hh:ii',
+                autoclose: true,
+                startView: 'day',
+                pickerPosition: "bottom-right",
+            });
+
+            //Calendar to open DTP
+            $('#sCalendar').on('click', function () {
+                $('#Birthday').trigger('focus');
+            });
+
+            //Switch button
+            $("#IsActive").on('change', function (event) {
+                var title = $("#IsActive").attr("data-title");
+                var description = $("#IsActive").attr("data-description");
+                HelpSideBar(title, description);
+            });
+
+        });
+    </script>
+
+    <script>
+        $(function () {
+            //debugger;
+            if (localStorage.isHelpVisible == 'true') {
+                Close();
+            }
+            else {
+                Open();
+            }
+
+            $(window).scroll(function () {
+                $("#right-sidebar").css("margin-top", Math.max(0, $(this).scrollTop()-112));
+            });
+        });
+
+        $(".help-sidebar").click(function () {
+            //debugger;
+            var event = $(this);
+            //var title = event.attr("data-title");
+            //var description = event.attr("data-description");
+            var title = $(this).attr("data-title");
+            var description = $(this).attr("data-description");
+            HelpSideBar(title, description);
+
+        });
+        //Function that fill help right side bar
+        function HelpSideBar(title, description) {
+            //debugger;
+            $("#title").text(title);
+            $("#description").text(description);
+        }
+        /* BEGIN EXTERNAL SOURCE */
+        $("#close").click(function () {
+            //debugger;
+            if ($("#right-sidebar").is(':visible')) {
+                Open();
+            }
+            else {
+                Close();
+            }
+        });
+
+        function Open() {
+            //debugger;
+            var option = { direction: 'right' };
+            $("#right-sidebar").hide();
+            $("#left-side-bar").removeClass("col-md-9");
+            $("#left-side-bar").addClass("col-md-12");
+
+            $("#icon-expand").removeClass("fa-chevron-right");
+            $("#icon-expand").addClass("fa-chevron-left");
+            $("#expand").html("@SharedLocalizer["OpenHelp"]");
+
+            localStorage.isHelpVisible = false;
+        }
+        function Close() {
+            //debugger;
+            $("#left-side-bar").removeClass("col-md-12");
+            $("#left-side-bar").addClass("col-md-9");
+            var option = { direction: 'right' };
+            $("#right-sidebar").show();
+            $("#icon-expand").removeClass("fa-chevron-left");
+            $("#icon-expand").addClass("fa-chevron-right");
+            $("#expand").html("@SharedLocalizer["CloseHelp"]");
+
+            localStorage.isHelpVisible = true;
+        }
+    </script>
+}

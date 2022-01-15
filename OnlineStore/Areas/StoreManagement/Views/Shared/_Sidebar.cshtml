@@ -1,0 +1,88 @@
+﻿@{
+    var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
+    var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    //var id = ViewContext.RouteData.Values["id"];
+}
+
+<!-- Brand Logo -->
+<a asp-action="Index" asp-controller="Home" asp-area="Store" class="brand-link">
+    <img src="~/img/AdminLTELogo.png"
+         alt="AdminLTE Logo"
+         class="brand-image img-circle elevation-3"
+         style="opacity: .8">
+    <span class="brand-text font-weight-light">Online Store</span>
+</a>
+
+@*<div class="row">
+    <div class="text-center">
+        <img style="width:50%; margin-top:20px" src="~/img/logo.png">
+    </div>
+</div>*@
+
+<!-- Sidebar -->
+<div class="sidebar">
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+            with font-awesome or any other icon font library -->
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Home" class="nav-link @((action == "index") && controller == "home" ? "active" : "" )">
+                    <i class="nav-icon fa fa-tachometer-alt"></i>
+                    <p>
+                        Dashboard
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Movies" class="nav-link @((action == "index" || action == "add" || action == "edit" || action == "details") && (controller == "products") ? "active" : "" ) ">
+                    <i class="nav-icon fa fa-film"></i>
+                    <p>
+                        Products
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Booking" class="nav-link @((action == "index" || action == "add" || action == "edit" || action == "details") && controller == "orders" ? "active" : "" ) ">
+                    <i class="nav-icon fa fa-calendar-day"></i>
+                    <p>
+                        Orders
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item has-treeview @(controller == "roles" || controller == "staff" || controller == "clients" ? "menu-open" : "" )">
+                <a href="#" class="nav-link @(controller == "roles" || controller == "staff" || controller == "clients" ? "active" : "" )">
+                    <i class="nav-icon fa fa-users"></i>
+                    <p>
+                        Users
+                        <i class="right fa fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Clients" class="nav-link @(controller == "clients" ? "active" : "" )">
+                            <i class="fa fa-user nav-icon"></i>
+                            <p>Clients</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Staff" class="nav-link @(controller == "staff" ? "active" : "" )">
+                            <i class="fa fa-user-tie nav-icon"></i>
+                            <p>Staff</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Roles" class="nav-link @(controller == "roles" ? "active" : "" )">
+                            <i class="fa fa-users-cog nav-icon"></i>
+                            <p>Roles</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
