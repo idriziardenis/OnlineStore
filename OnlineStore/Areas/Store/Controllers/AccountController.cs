@@ -30,8 +30,9 @@ namespace OnlineStore.Areas.Store.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IRolesRepository _rolesRepository;
         private readonly ISelectListService _selectListService;
+        private IStringLocalizer<SharedResource> _sharedLocalizer;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUserService userService, IUserRepository userRepository, IRolesRepository rolesRepository, ISelectListService selectListService, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUserService userService, IUserRepository userRepository, IRolesRepository rolesRepository, ISelectListService selectListService, RoleManager<IdentityRole> roleManager, IStringLocalizer<SharedResource> sharedLocalizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -40,6 +41,7 @@ namespace OnlineStore.Areas.Store.Controllers
             _rolesRepository = rolesRepository;
             _selectListService = selectListService;
             _roleManager = roleManager;
+            _sharedLocalizer = sharedLocalizer;
         }
 
         [TempData]
@@ -74,7 +76,7 @@ namespace OnlineStore.Areas.Store.Controllers
                     var userRole = _userRepository.GetUserRoleByUserId(userId);
                     if (userRole.RoleId == "1")
                     {
-                        return RedirectToAction("Profile", "Home", new { area = "Cinema", id = userId });
+                        return RedirectToAction("Index", "Home", new { area = "Store" });
                     }
                     else
                     {
@@ -215,11 +217,11 @@ namespace OnlineStore.Areas.Store.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> RegisterAsync(string returnUrl = null)
+        public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             var model = new RegisterViewModel();
-            model.Genders = new SelectList(_selectListService.GetGendersKeysValues(), "BKey", "Value", selectedValue: model.Gender);
+            model.Genders = new SelectList(_selectListService.GetGendersKeysValues(_sharedLocalizer["Man"].Value, _sharedLocalizer["Woman"].Value), "BKey", "Value", selectedValue: model.Gender);
             return View(model);
         }
 

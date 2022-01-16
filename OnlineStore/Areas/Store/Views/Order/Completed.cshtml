@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Order Completed";
+}
+
+@await Html.PartialAsync("_Breadcrumb", new BreadcrumbViewModel() { PageName = "Home", ActivePageName = "Order Completed" })
+
+<section class="order-complete-area pattern-bg pt-100 pb-100" data-background="/front/img/bg/pattern_bg.jpg" style="background-image: url(/front/img/bg/pattern_bg.jpg);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="order-complete-bg" data-background="/front/img/bg/order_comp_bg.png" style="background-image: url(/front/img/bg/order_comp_bg.png);">
+                    <div class="order-complete-content">
+                        <h3><span>your</span> Order Is Completed!</h3>
+                        <div class="check mb-25">
+                            <img src="/front/img/icon/check.png" alt="">
+                        </div>
+                        <p>
+                            Thank you for your order! Your order is being processed and will be completed within 6-12 Hours. You will receive an
+                            email confirmation when your order is completed.
+                        </p>
+                        <a asp-action="Index" asp-controller="Home" class="btn">CONTINUE SHOPPING</a>
+                        <p class="get-ans">Get answers to all your <a href="#">Questions</a> you might have.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

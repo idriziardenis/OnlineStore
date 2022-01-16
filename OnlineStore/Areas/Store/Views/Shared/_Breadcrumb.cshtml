@@ -1,0 +1,22 @@
+﻿@model BreadcrumbViewModel
+@{ 
+    string pageName = Model == null ? "Home" : Model.PageName;
+    string activePageName = Model == null ? "Contact us" : Model.ActivePageName;
+}
+<section class="breadcrumb-area breadcrumb-bg" data-background="/front/img/bg/breadcrumb_bg.jpg" style="background-image: url(/front/img/bg/breadcrumb_bg.jpg&quot;);">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-content text-center">
+                    <h2>@activePageName</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">@pageName</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">@activePageName</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

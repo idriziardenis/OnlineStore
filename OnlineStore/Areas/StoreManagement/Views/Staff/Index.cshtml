@@ -1,0 +1,286 @@
+﻿@{
+    ViewData["Title"] = SharedLocalizer["Staff"];
+    SuccessResult notification = null;
+    if (ViewBag.Notification != null)
+    {
+        notification = ViewBag.Notification;
+    }
+}
+
+@section Styles{
+    <!-- DataTables -->
+    <link href="~/lib/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <!-- Jquery Confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="col-sm-12 breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">@SharedLocalizer["Home"]</a></li>
+                    <li class="breadcrumb-item active"><a href="#">@SharedLocalizer["Staff"]</a></li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- jquery validation -->
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title"><i class="fa fa-list"></i> &nbsp;&nbsp; @SharedLocalizer["ListOfStaff"]</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a asp-action="Add" style="float:right;" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> &nbsp;&nbsp;@SharedLocalizer["Add"]</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body">
+                        <table id="Table" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <td>@SharedLocalizer["Name"]</td>
+                                    <td>@SharedLocalizer["Email"]</td>
+                                    <td>@SharedLocalizer["Role"]</td>
+                                    <td>@SharedLocalizer["RegisteredDate"]</td>
+                                    <td class="text-center">@SharedLocalizer["IsActive"]</td>
+                                    <td class="text-center">@SharedLocalizer["Actions"]</td>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    <!-- DataTables -->
+    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <!-- Jquery Confirm -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script>var table;</script>
+    <script>
+        $(document).ready(function () {
+            //ImageNotAvailable
+            function imgError(image) {
+                image.onerror = "";
+                image.src = "/uploads/notfound/notfound_75.png";
+                return true;
+            }
+
+            $.fn.dataTableExt.oSort["status-asc"] = function (x, y) {
+                var a = x.includes("success");
+                var b = y.includes("success");
+
+                if (a > b) {
+                    return 1;
+                }
+                return -1;
+            }
+            $.fn.dataTableExt.oSort["status-desc"] = function (x, y) {
+                var a = x.includes("success");
+                var b = y.includes("success");
+
+                if (a > b) {
+                    return -1;
+                }
+                return 1;
+            }
+
+            var url = "@Url.Action("GetStaffJson", "Staff")";
+            table = $("#Table").DataTable({
+                pageLength: 8,
+                responsive: true,
+                autoWidth: false,
+                aaSorting: [],
+                order: [[0, "desc"]],
+                //"processing": true,
+                //"serverSide": true,
+                //"filter": true,
+                //"orderMulti": false,
+
+                ajax: {
+                    url: url,
+                    dataSrc: ""
+                },
+                columns: [
+                    { data: "name", title: "@SharedLocalizer["Name"]" },
+                    { data: "email", title: "@SharedLocalizer["Email"]" },
+                    {
+                      data: "role", title: "@SharedLocalizer["Role"]", sClass: "text-center", render: function (a, b, data, d) {
+                            if (data.role == 'Super Admin') {
+                                return '<span class="badge badge-success">' + '@SharedLocalizer["SuperAdmin"]' + '</span>';
+                            }
+                            else if (data.role == 'Admin') {
+                                return '<span class="badge badge-primary">' + '@SharedLocalizer["Admin"]' + '</span>';
+                            }
+                            else if (data.role == 'Manager') {
+                                return '<span class="badge badge-info">' + '@SharedLocalizer["Manager"]' + '</span>';
+                            }
+                            else if (data.role == 'Receptionist') {
+                                return '<span class="badge badge-warning">' + '@SharedLocalizer["Receptionist"]' + '</span>';
+                            }
+                            else {
+                                return '<span class="badge badge-secondary">' + '@SharedLocalizer["Client"]' + '</span>';
+                            }
+                      }
+                    },
+                    { data: "registereddate", title: "@SharedLocalizer["RegisteredDate"]" },
+                    {
+                        data: "isactive", title: "@SharedLocalizer["IsActive"]", type: "status", sClass: "text-center", render: function (a, b, data, d) {
+                            if (data.isactive == true)
+                          {
+                                return '<i class="fa fa-check text-success"></i>';
+                          }
+                          else
+                          {
+                                return '<i class="fa fa-remove text-danger"></i>';
+                          }
+                      }
+                    },
+                    {
+                      data: null, title: "@SharedLocalizer["Actions"]", className: "text-center", orderable: false, render: function (a, b, data, d) {
+
+                          var actions = '<div class="btn-group btn-hspace">' +
+                              '<button type= "button" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true"><spanclass="icon mdi mdi-chevron-down"></span></button >' +
+                              '<div class="dropdown-menu dropdown-menu-right" >' +
+                              '<a class="dropdown-item" href="@Url.Action("Edit", "Staff")/?id=' + data.id + '"><i class="fa fa-edit text-warning"></i>@SharedLocalizer["EditStaff"]</a>';
+
+                            actions += '<a class="dropdown-item js-delete" href="javascript:void(0)" data-id="' + data.id + '"><i class="fa fa-remove text-danger"></i> @SharedLocalizer["DeleteStaff"]</a>';
+                          actions += '</div></div>';
+                          return actions;
+                      },
+                    }
+                ],
+                language: {
+                    "sEmptyTable": "@SharedLocalizer["sEmptyTable"]",
+                    "sInfo": "@SharedLocalizer["sInfo"]",
+                    "sInfoEmpty": "@SharedLocalizer["sInfoEmpty"]",
+                    "sInfoFiltered": "@SharedLocalizer["sInfoFiltered"]",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "@SharedLocalizer["sLengthMenu"]",
+                    "sLoadingRecords": "@SharedLocalizer["sLoadingRecords"]",
+                    "sProcessing": "@SharedLocalizer["sProcessing"].",
+                    "sSearch": "@SharedLocalizer["sSearch"]",
+                    "sZeroRecords": "@SharedLocalizer["sZeroRecords"]",
+                    "oPaginate": {
+                        "sFirst": "@SharedLocalizer["sFirst"]",
+                        "sLast": "@SharedLocalizer["sLast"]",
+                        "sNext": "@SharedLocalizer["sNext"]",
+                        "sPrevious": "@SharedLocalizer["sPrevious"]"
+                    },
+                    "oAria": {
+                        "sSortAscending": "@SharedLocalizer["sSortAscending"]",
+                        "sSortDescending": "@SharedLocalizer["sSortDescending"]"
+                    }
+                }
+            })
+            $("img").on("error", function () {
+                $(this).attr("src", "notfound_75.png");
+            });
+        });
+    </script>
+    <!--Delete event-->
+    <script>
+        $(document).on("click", ".js-delete", function () {
+
+            var dataId = $(this).attr("data-id");
+
+            $.confirm({
+                title: '<i class="fa fa-warning"></i> @SharedLocalizer["PleaseConfirm"]',
+                content: '@SharedLocalizer["ToDeleteStaff"]',
+                autoClose: 'cancel|10000',
+                type: 'red',
+                closeIcon: true,
+                closeIconClass: 'fa fa-close',
+                buttons: {
+                    cancel: {
+                        text: '@SharedLocalizer["Cancel"]',
+                        keys: ['esc'],
+                        action: function () {
+                        }
+                    },
+                    confirm: {
+                        text: '@SharedLocalizer["Delete"]',
+                        btnClass: 'btn-danger',
+                        keys: ['enter'],
+                        action: function () {
+                            var url = '@Url.Action("Delete")';
+                            $.ajax({
+                                type: "DELETE",
+                                async: false,
+                                url: url,
+                                dataType: "json",
+                                data: {
+                                    id: dataId,
+                                },
+                                success: function (data) {
+                                    table.ajax.reload();
+                                    toastr.success('@SharedLocalizer["StaffDeletedSuccessfully"]');
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    toastr.error('@SharedLocalizer["SmthWentWrong"]');
+                                }
+                            });
+                        }
+                    },
+
+                }
+            });
+        });
+    </script>
+
+    <!--Notification-->
+    <script>
+        $(function () {
+
+            @if (notification != null)
+            {
+                if (notification.Success)
+                {
+
+                   @:toastr.success('@notification.Message');
+
+                }
+                else
+                {
+                   @:toastr.error('@notification.Message');
+                }
+
+            }
+
+        });
+    </script>
+}

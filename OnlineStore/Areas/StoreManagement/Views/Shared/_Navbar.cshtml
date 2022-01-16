@@ -21,17 +21,17 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fa fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">@SharedLocalizer["Home"]</a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+        <a href="#" class="nav-link">@SharedLocalizer["Contact"]</a>
     </li>
 </ul>
 
 <!-- SEARCH FORM -->
 <form class="form-inline ml-3">
     <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-navbar" type="search" placeholder="@SharedLocalizer["Search"]" aria-label="Search">
         <div class="input-group-append">
             <button class="btn btn-navbar" type="submit">
                 <i class="fa fa-search"></i>
@@ -44,7 +44,7 @@
 <ul class="navbar-nav ml-auto">
 
     <!-- Language Dropdown Menu -->
-    <li class="nav-item dropdown">
+    <!--<li class="nav-item dropdown">
         @if (culture == "sq-AL")
         {
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -73,7 +73,7 @@
                 </a>
             </div>
         }
-    </li>
+    </li>-->
     <li class="nav-item dropdown user-menu" style="max-width: 180px !important; min-width: 150px !important; padding: 0 !important;">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
             <span class="d-none d-md-inline">@_userService.GetFullName()</span>
@@ -88,8 +88,7 @@
             <li class="user-footer">
 
                 <form asp-action="Logout" asp-controller="Account" asp-area="Store">
-                    <a asp-action="Profile" asp-controller="Home" asp-area="StoreManagement" asp-route-id="@_userService.GetUserId()" class="btn btn-xs btn-default btn-flat">Profile</a>
-                    <button type="submit" class="btn btn-xs btn-default btn-flat float-right">Sign out</button>
+                    <button type="submit" class="btn btn-xs btn-default btn-flat float-right">@SharedLocalizer["SignOut"]</button>
                 </form>
 
             </li>

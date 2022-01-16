@@ -9,7 +9,35 @@ namespace OnlineStore.Services
 {
     public class SelectListService : ISelectListService
     {
-        public IEnumerable<KeyValueItem> GetGendersKeysValues()
+        private ICategoryRepository _categoryRepository;
+
+        public SelectListService(ICategoryRepository categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
+
+        public IEnumerable<KeyValueItem> GetCategoriesKeysValues()
+        {
+            try
+            {
+                var categories = _categoryRepository.Find(p => p.IsActive == true && p.IsDeleted == false);
+
+                var result = categories.Select(category => new KeyValueItem()
+                {
+                    Key = category.Id,
+                    Value = category.Name
+                });
+
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IEnumerable<KeyValueItem> GetGendersKeysValues(string man, string woman)
         {
             try
             {
@@ -17,11 +45,11 @@ namespace OnlineStore.Services
                 {
                     new KeyValueItem(){
                         BKey = true,
-                        Value = "Man"
+                        Value = man
                     },
                     new KeyValueItem(){
                         BKey = false,
-                        Value = "Woman"
+                        Value = woman
                     },
                 };
             }

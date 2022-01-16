@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
-// If you have enabled NRTs for your project, then un-comment the following line:
-// #nullable disable
-
 namespace OnlineStore.Entities
 {
     public partial class AspNetUsers
@@ -15,6 +11,7 @@ namespace OnlineStore.Entities
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
+            ShoppingCart = new HashSet<ShoppingCart>();
         }
 
         public string Id { get; set; }
@@ -34,6 +31,13 @@ namespace OnlineStore.Entities
         public int AccessFailedCount { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string CompanyName { get; set; }
+        public string Country { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string Zip { get; set; }
+        public string Phone { get; set; }
         public bool? Gender { get; set; }
         public DateTime? Birthday { get; set; }
         public bool? IsActive { get; set; }
@@ -47,5 +51,6 @@ namespace OnlineStore.Entities
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual ICollection<ShoppingCart> ShoppingCart { get; set; }
     }
 }

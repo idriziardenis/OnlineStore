@@ -44,8 +44,6 @@ namespace OnlineStore.Areas.StoreManagement.Controllers
         {
             try
             {
-                var b = _sharedLocalizer["Man"];
-                var a = _sharedLocalizer["Man"].Value;
                 if (TempData["SuccessResultF"] != null)
                 {
                     var flag = (bool)TempData["SuccessResultF"];
@@ -68,7 +66,7 @@ namespace OnlineStore.Areas.StoreManagement.Controllers
             {
                 var model = new ClientViewModel();
                 model.Id = null;
-                model.Genders = new SelectList(_selectListService.GetGendersKeysValues(), "BKey", "Value", selectedValue: model.Gender);
+                model.Genders = new SelectList(_selectListService.GetGendersKeysValues(_sharedLocalizer["Man"].Value, _sharedLocalizer["Woman"].Value), "BKey", "Value", selectedValue: model.Gender);
                 model.IsActive = true;
                 return View(model);
             }
@@ -87,7 +85,7 @@ namespace OnlineStore.Areas.StoreManagement.Controllers
                 if (!ModelState.IsValid)
                 {
                     model.Id = null;
-                    model.Genders = new SelectList(_selectListService.GetGendersKeysValues(), "BKey", "Value", selectedValue: model.Gender);
+                    model.Genders = new SelectList(_selectListService.GetGendersKeysValues(_sharedLocalizer["Man"].Value, _sharedLocalizer["Woman"].Value), "BKey", "Value", selectedValue: model.Gender);
                     model.IsActive = true;
 
                     return View("Add", model);
@@ -150,7 +148,7 @@ namespace OnlineStore.Areas.StoreManagement.Controllers
                 else
                 {
                     var roleId = _rolesRepository.GetByUserId(id).Id;
-                    if (roleId != "4")
+                    if (roleId != "1")
                     {
                         return RedirectToAction("Index");
                     }
@@ -164,7 +162,7 @@ namespace OnlineStore.Areas.StoreManagement.Controllers
                     model.Birthday = user.Birthday;
                     model.IsActive = user.IsActive.Value;
 
-                    model.Genders = new SelectList(_selectListService.GetGendersKeysValues(), "BKey", "Value", selectedValue: model.Gender);
+                    model.Genders = new SelectList(_selectListService.GetGendersKeysValues(_sharedLocalizer["Man"].Value, _sharedLocalizer["Woman"].Value), "BKey", "Value", selectedValue: model.Gender);
                 }
 
                 return View(model);
@@ -185,7 +183,7 @@ namespace OnlineStore.Areas.StoreManagement.Controllers
                 if (!ModelState.IsValid)
                 {
                     model.Id = null;
-                    model.Genders = new SelectList(_selectListService.GetGendersKeysValues(), "BKey", "Value", selectedValue: model.Gender);
+                    model.Genders = new SelectList(_selectListService.GetGendersKeysValues(_sharedLocalizer["Man"].Value, _sharedLocalizer["Woman"].Value), "BKey", "Value", selectedValue: model.Gender);
                     model.IsActive = true;
 
                     return View("Add", model);

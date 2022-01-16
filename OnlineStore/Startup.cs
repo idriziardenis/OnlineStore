@@ -46,17 +46,17 @@ namespace OnlineStore
                 en.DateTimeFormat.LongTimePattern = "dd/MM/yyyy";
                 en.DateTimeFormat.ShortTimePattern = "HH:mm";
                 en.DateTimeFormat.LongTimePattern = "HH:mm";
-                var al = new CultureInfo("sq-AL");
-                al.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
-                al.DateTimeFormat.LongTimePattern = "dd.MM.yyyy";
-                al.DateTimeFormat.ShortTimePattern = "HH:mm";
-                al.DateTimeFormat.LongTimePattern = "HH:mm";
-                al.NumberFormat.NumberDecimalSeparator = ".";
+                //var al = new CultureInfo("sq-AL");
+                //al.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
+                //al.DateTimeFormat.LongTimePattern = "dd.MM.yyyy";
+                //al.DateTimeFormat.ShortTimePattern = "HH:mm";
+                //al.DateTimeFormat.LongTimePattern = "HH:mm";
+                //al.NumberFormat.NumberDecimalSeparator = ".";
 
                 var supportedCultures = new[]
                 {
                    en,
-                   al
+                   //al
                 };
 
                 options.DefaultRequestCulture = new RequestCulture(en, en);
@@ -137,6 +137,13 @@ namespace OnlineStore
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRolesRepository, RolesRepository>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IOrderItemRepository, OrderItemRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IFileHelper, FileHelper>();
+            services.AddTransient<IThumbnailService, ThumbnailService>();
+            services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
             //services.AddScoped<INewsletterService, NewsletterService>();
             //services.AddTransient<IRepository, Repository>();
             services.AddControllersWithViews();

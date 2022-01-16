@@ -55,14 +55,14 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>0</h3>
+                        <h3>@Model.NoProducts</h3>
 
-                        <p>MonthlyTickets</p>
+                        <p>Number of Products</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-ticket-alt"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-action="Index" asp-controller="Product" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -70,14 +70,14 @@
                 <!-- small box -->
                 <div class="small-box bg-secondary">
                     <div class="inner">
-                        <h3>0</h3>
+                        <h3>@Model.NoCategories</h3>
 
-                        <p>MonthlyBookings</p>
+                        <p>Number of Categories</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-calendar-day"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-action="Index" asp-controller="Category" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -85,14 +85,14 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>0</h3>
+                        <h3>@Model.NoOrders</h3>
 
-                        <p>NewClients</p>
+                        <p>Number of Orders</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-action="Index" asp-controller="Order" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -100,120 +100,19 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>0</h3>
+                        <h3>@Model.NoClients</h3>
 
-                        <p>NewMovies</p>
+                        <p>Number of Clients</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-film"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-action="Index" asp-controller="Clients" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
         </div>
         <!-- /.row -->
-    </div>
-</section>
-<!-- /.content -->
-<!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                @*AREA CHART*@
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">TicketsAndBookings</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body" style="display: block;">
-                        <div class="chart">
-                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 484px;" width="484" height="250" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-                    @*/.card-body*@
-                </div>
-                @*/.card*@
-
-                @*LINE CHART*@
-                <div class="card card-warning">
-                    <div class="card-header">
-                        <h3 class="card-title">ClientsBasedOnGender</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="clientsChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 484px;" width="484" height="250" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-                    @*/.card-body*@
-                </div>
-                @*/.card*@
-
-
-            </div>
-            @*/.col (LEFT)*@
-            <div class="col-md-6">
-                @*BAR CHART*@
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">SchedulesBasedOnHall</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="schedulesChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 484px;" width="484" height="250" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-                    @*/.card-body*@
-                </div>
-                @*/.card*@
-
-                @*DONUT CHART*@
-                <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">MostWatchedMovie</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                        <canvas id="moviesChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 484px;" width="484" height="250" class="chartjs-render-monitor"></canvas>
-                    </div>
-                    @*/.card-body*@
-                </div>
-                @*/.card*@
-
-            </div>
-            @*/.col (RIGHT)*@
-        </div>
     </div>
 </section>
 <!-- /.content -->

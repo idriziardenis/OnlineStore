@@ -1,0 +1,245 @@
+﻿@model CategoryViewModel
+@{
+    ViewData["Title"] = (Model.Id == 0 ? SharedLocalizer["Add"].Value : SharedLocalizer["Edit"].Value);
+}
+
+@section Styles{
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/lib/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="col-sm-12 breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">@SharedLocalizer["Home"]</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">@SharedLocalizer["Categories"]</a></li>
+                    @if (Model.Id == 0)
+                    {
+                        <li class="breadcrumb-item active">@SharedLocalizer["Add"]</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item">@Model.Name</li>
+                        <li class="breadcrumb-item active">@SharedLocalizer["Edit"]</li>
+                    }
+
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-9" id="left-side-bar">
+                <!-- jquery validation -->
+                <div class="card @(Model.Id==0 ? "card-primary" : "card-warning")">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa @(Model.Id==0 ? "fa-plus" : "fa-edit")"></i> &nbsp;&nbsp; @(Model.Id==0 ? SharedLocalizer["AddCategory"].Value : SharedLocalizer["EditCategory"].Value)</h3>
+                        <span id="close" style="float:right" class="hidden-sm hidden-xs">
+                            <span id="expand">@SharedLocalizer["CloseHelp"]</span>
+                            <i class="fa fa-chevron-right" id="icon-expand" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form id="CategoryForm" asp-action="Add">
+                        <input type="hidden" asp-for="Id" value="@Model.Id" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["Name"] *</label>
+                                        <input type="text" asp-for="Name" class="form-control help-sidebar" data-title="@SharedLocalizer["Name"]" data-description="@SharedLocalizer["Name"]" placeholder="@SharedLocalizer["EnterName"]">
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["Description"]</label>
+                                        <div class="mb-3">
+                                            <div class="help-sidebar" data-title="@SharedLocalizer["Description"]" data-description="@SharedLocalizer["Description"]">
+                                                <textarea class="textarea" id="Description" asp-for="Description" placeholder="@SharedLocalizer["Description"]"
+                                                          style="font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>@SharedLocalizer["IsActive"]</label>
+                                        <div class="input-group">
+                                            <input type="checkbox" data-title="@SharedLocalizer["IsActive"]" data-description="@SharedLocalizer["IsActive"]" asp-for="IsActive" data-toggle="switchbutton" data-size="xs" data-onlabel="@SharedLocalizer["Yes"]" data-offlabel="@SharedLocalizer["No"]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <div class="pull-right">
+                                <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+                                <button type="submit" class="btn @(Model.Id == 0 ? "btn-primary" : "btn-warning")"><i class="fa fa-save"></i> &nbsp;&nbsp;@SharedLocalizer["Save"]</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-3 navbar-right hidden-sm hidden-xs help-bar remove-left-padding" id="right-sidebar">
+                <div class="card @(Model.Id==0 ? "card-primary" : "card-warning")">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa fa-info"></i><span style="margin-left:15px" id="title">@SharedLocalizer["QuickHelp"]</span></h3>
+                    </div>
+                    <div class="card-body">
+                        <p id="description">
+                            @(Model.Id == 0 ? @SharedLocalizer["AddForm"] : @SharedLocalizer["EditForm"])
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    <!-- Jquery Validation -->
+    <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/additional-methods.min.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#CategoryForm').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 3,
+                    },
+                },
+                messages: {
+                    Name: {
+                        required: "@SharedLocalizer["FieldRequired"]",
+                        minlength: "@SharedLocalizer["MinLength3"]"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+
+            // Summernote
+            $('#Description').summernote({
+                height: 100,
+            });
+
+            //Switch button
+            $("#IsActive").on('change', function (event) {
+                var title = $("#IsActive").attr("data-title");
+                var description = $("#IsActive").attr("data-description");
+                HelpSideBar(title, description);
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            if (localStorage.isHelpVisible == 'true') {
+                Close();
+            }
+            else {
+                Open();
+            }
+
+            $(window).scroll(function () {
+                $("#right-sidebar").css("margin-top", Math.max(0, $(this).scrollTop()-112));
+            });
+        });
+
+        function TriggerHelp(obj) {
+            debugger;
+            var title = $(obj).attr("data-title");
+            var description = $(obj).attr("data-description");
+            HelpSideBar(title, description);
+        }
+
+        $(".help-sidebar").click(function () {
+            var title = $(this).attr("data-title");
+            var description = $(this).attr("data-description");
+            HelpSideBar(title, description);
+        });
+        //Function that fill help right side bar
+        function HelpSideBar(title, description) {
+            //debugger;
+            $("#title").text(title);
+            $("#description").text(description);
+        }
+
+        $("#close").click(function () {
+            if ($("#right-sidebar").is(':visible')) {
+                Open();
+            }
+            else {
+                Close();
+            }
+        });
+
+        function Open() {
+
+            var option = { direction: 'right' };
+            $("#right-sidebar").hide();
+            $("#left-side-bar").removeClass("col-md-9");
+            $("#left-side-bar").addClass("col-md-12");
+
+            $("#icon-expand").removeClass("fa-chevron-right");
+            $("#icon-expand").addClass("fa-chevron-left");
+            $("#expand").html("@SharedLocalizer["OpenHelp"]");
+
+            localStorage.isHelpVisible = false;
+        }
+        function Close() {
+            //debugger;
+            $("#left-side-bar").removeClass("col-md-12");
+            $("#left-side-bar").addClass("col-md-9");
+            var option = { direction: 'right' };
+            $("#right-sidebar").show();
+            $("#icon-expand").removeClass("fa-chevron-left");
+            $("#icon-expand").addClass("fa-chevron-right");
+            $("#expand").html("@SharedLocalizer["CloseHelp"]");
+
+            localStorage.isHelpVisible = true;
+        }
+    </script>
+
+}

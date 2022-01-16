@@ -2,10 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
-// If you have enabled NRTs for your project, then un-comment the following line:
-// #nullable disable
-
 namespace OnlineStore.Entities
 {
     public partial class ApplicationDBContext : DbContext
@@ -26,6 +22,22 @@ namespace OnlineStore.Entities
         public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<OrderItem> OrderItem { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<ProductUpload> ProductUpload { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCart { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Data Source=ardenisidrizi\\ardenis;Initial Catalog=OnlineStore;Integrated Security=True");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
@@ -124,6 +136,86 @@ namespace OnlineStore.Entities
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
 
                 entity.Property(e => e.UserName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<OrderItem>(entity =>
+            {
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderItem)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderItem_OrderItem");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderItem)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderItem_Product");
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Product)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Product_Category");
+            });
+
+            modelBuilder.Entity<ProductUpload>(entity =>
+            {
+                entity.Property(e => e.Name).IsRequired();
+
+                entity.Property(e => e.Path).IsRequired();
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductUpload)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ProductUpload_Product");
+            });
+
+            modelBuilder.Entity<ShoppingCart>(entity =>
+            {
+                entity.Property(e => e.ClientId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.ShoppingCart)
+                    .HasForeignKey(d => d.ClientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ShoppingCart_AspNetUsers");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ShoppingCart)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ShoppingCart_Product");
             });
 
             OnModelCreatingPartial(modelBuilder);

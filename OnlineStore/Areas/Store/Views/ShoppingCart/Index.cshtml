@@ -1,0 +1,84 @@
+﻿@model ShoppingCartViewModel
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+@await Html.PartialAsync("_Breadcrumb", new BreadcrumbViewModel() { PageName = "Home", ActivePageName = "Cart" })
+
+<section class="shop-cart-area wishlist-area pt-100 pb-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="table-responsive-xl">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail"></th>
+                                <th class="product-name">Product</th>
+                                <th class="product-price">Price</th>
+                                <th class="product-quantity">QUANTITY</th>
+                                <th class="product-subtotal">SUBTOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.ShoppingCartItems.Any())
+                            {
+                                foreach (var item in Model.ShoppingCartItems)
+                                {
+                                    <tr class="remove-product-@item.Id">
+                                        <td class="product-thumbnail">
+                                            <a href="#" class="remove-product" data-id="@item.Id"><i class="flaticon-cancel-1"></i></a><a href="shop-details.html"><img src="@item.Path" alt=""></a>
+                                        </td>
+                                        <td class="product-name">
+                                            <h4><a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId">@item.Name</a></h4>
+                                        </td>
+                                        <td class="product-price">$ @item.Price</td>
+                                        <td class="product-quantity">
+                                            <label>@item.Quantity</label>
+                                        </td>
+                                        <td class="product-subtotal"><span>$ @item.Total</span></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="shop-cart-bottom mt-20">
+                    <div class="row">
+                        <div class="col-md-7">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="continue-shopping">
+                                <a asp-action="Index" asp-controller="Home" class="btn">Continue Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-8">
+                <aside class="shop-cart-sidebar">
+                    <div class="shop-cart-widget">
+                        <h6 class="title">Cart Totals</h6>
+                        <form action="#">
+                            <ul>
+                                <li><span>SUBTOTAL</span> $ @Model.Total</li>
+                                <li>
+                                    <span>SHIPPING</span>
+                                    <div class="shop-check-wrap">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                            <label class="custom-control-label" for="customCheck2">FREE SHIPPING</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="cart-total-amount"><span>TOTAL</span> <span class="amount">$ @Model.Total</span></li>
+                            </ul>
+                            <a asp-action="Index" asp-controller="Checkout" class="btn">PROCEED TO CHECKOUT</a>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>

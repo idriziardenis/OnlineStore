@@ -1,0 +1,132 @@
+﻿@model CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+@await Html.PartialAsync("_Breadcrumb", new BreadcrumbViewModel() { PageName = "Home", ActivePageName = "Checkout" })
+
+<section class="checkout-area pt-100 pb-100">
+    <div class="container">
+        <form asp-action="Index">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="checkout-wrap">
+                        <h5 class="title">information</h5>
+                        <form class="checkout-form">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-grp">
+                                        <label for="Name">FIRST NAME <span>*</span></label>
+                                        <input type="text" asp-for="Name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-grp">
+                                        <label for="Surname">SUR NAME <span>*</span></label>
+                                        <input type="text" asp-for="Surname">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-grp">
+                                        <label for="CompanyName">COMPANY NAME <small>(OPTIONAL)</small></label>
+                                        <input type="text" asp-for="CompanyName">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-grp">
+                                        <label for="Country">COUNTRY / REGION *</label>
+                                        <input type="text" asp-for="Country">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-grp">
+                                        <label for="Street">STREET ADDRESS *</label>
+                                        <input type="text" asp-for="Street">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-grp">
+                                        <label for="City">TOWN / CITY *</label>
+                                        <input type="text" asp-for="City" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-grp">
+                                        <label for="State">STATE *</label>
+                                        <input type="text" asp-for="State" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-grp">
+                                        <label for="Zip">postal ZIP <span>*</span></label>
+                                        <input type="text" asp-for="Zip">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-grp">
+                                        <label for="Phone">Your PHONE <span>*</span></label>
+                                        <input type="text" asp-for="Phone">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-grp">
+                                        <label for="Email">EMAIL ADDRESS <span>*</span></label>
+                                        <input type="email" asp-for="Email">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-grp mb-0">
+                                        <label for="Message">ORDER you have NOTES <small>(OPTIONAL)</small></label>
+                                        <textarea asp-for="Message" placeholder="About Your Special Delivery Notes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8">
+                    <aside class="shop-cart-sidebar checkout-sidebar">
+                        <div class="shop-cart-widget">
+                            <h6 class="title">Cart Totals</h6>
+                            <ul>
+                                <li><span>SUBTOTAL</span> $ @Model.Subtotal</li>
+                                <li>
+                                    <span>SHIPPING</span>
+                                    <div class="shop-check-wrap">
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                            <label class="custom-control-label" for="customCheck2">FREE SHIPPING</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="cart-total-amount"><span>TOTAL</span> <span class="amount">$ @Model.Total</span></li>
+                            </ul>
+
+                            <div class="bank-transfer">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck4">
+                                    <label class="custom-control-label" for="customCheck4">Cash On Delivery</label>
+                                </div>
+                            </div>
+
+
+                            <div class="payment-terms">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                    <label class="custom-control-label" for="customCheck7">
+                                        I have read and agree to the website terms
+                                        and conditions *
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn">PROCEED TO CHECKOUT</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </form>
+        
+    </div>
+</section>

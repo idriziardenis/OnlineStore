@@ -1,0 +1,319 @@
+﻿
+@{
+    ViewData["Title"] = SharedLocalizer["Products"];
+    SuccessResult notification = null;
+    if (ViewBag.Notification != null)
+    {
+        notification = ViewBag.Notification;
+    }
+}
+
+
+@section Styles{
+    <!-- DataTables -->
+    <link href="~/lib/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <!-- Jquery Confirm -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="col-sm-12 breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">@SharedLocalizer["Home"]</a></li>
+                    <li class="breadcrumb-item active"><a href="#">@SharedLocalizer["Products"]</a></li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- jquery validation -->
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title"><i class="fa fa-list"></i> &nbsp;&nbsp; @SharedLocalizer["List of products"]</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <a asp-action="Add" style="float:right;" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> &nbsp;&nbsp; @SharedLocalizer["Add"]</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body">
+                        <table id="Table" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <td>@SharedLocalizer["Id"]</td>
+                                    <td>@SharedLocalizer["Image"]</td>
+                                    <td>@SharedLocalizer["Name"]</td>
+                                    <td>@SharedLocalizer["Description"]</td>
+                                    @*<td>@SharedLocalizer["Category"]</td>*@
+                                    <td class="text-center">@SharedLocalizer["Price"]</td>
+                                    <td class="text-center">@SharedLocalizer["Stock"]</td>
+                                    <td class="text-center">@SharedLocalizer["IsActive"]</td>
+                                    <td class="text-center">@SharedLocalizer["Actions"]</td>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+
+@section Scripts {
+    <!-- DataTables -->
+    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Buttons -->
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+    <!-- Jquery Confirm -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script>var table;</script>
+    <script>
+        $(document).ready(function () {
+            //ImageNotAvailable
+            function imgError(image) {
+                image.onerror = "";
+                image.src = "/uploads/notfound/notfound_75.png";
+                return true;
+            }
+
+            $.fn.dataTableExt.oSort["status-asc"] = function (x, y) {
+                var a = x.includes("success");
+                var b = y.includes("success");
+
+                if (a > b) {
+                    return 1;
+                }
+                return -1;
+            }
+            $.fn.dataTableExt.oSort["status-desc"] = function (x, y) {
+                var a = x.includes("success");
+                var b = y.includes("success");
+
+                if (a > b) {
+                    return -1;
+                }
+                return 1;
+            }
+
+            var url = "@Url.Action("GetProductsJson", "Product")";
+            table = $("#Table").DataTable({
+                pageLength: 8,
+                responsive: true,
+                autoWidth: false,
+                order: [[0, "desc"]],
+                //dom: '<"row"<"col-sm-4"l><"col-sm-4"B><"col-sm-4"f>>rtip',
+                //buttons: [
+                //    'copyHtml5',
+                //    'excelHtml5',
+                //    'csvHtml5',
+                //    'pdfHtml5'
+                //],
+                //"processing": true,
+                //"serverSide": true,
+                //"filter": true,
+                //"orderMulti": false,
+
+                ajax: {
+                    url: url,
+                    dataSrc: ""
+                },
+                columns: [
+                    { data: "id", title: "Id", width: "4%" },
+                    {
+                      data: "imagePath", title: "@SharedLocalizer["Image"]", orderable: false, render: function (data, type, full) {
+                          return '<a href="@Url.Action("Edit", "Product")/' + full['id'] + '"><img  src="' + data + '"  ></a>'
+                      }, width: "7%"
+                    },
+                    { data: "name", title: "@SharedLocalizer["Name"]" },
+                    { data: "description", title: "@SharedLocalizer["Description"]" },
+                    {
+                      data: "price", title: "@SharedLocalizer["Price"]", sClass: "text-center", render: function (a, b, data, d) {
+                          return data.price.toFixed(2) + '  $' ;
+                      }
+                    },
+                    {
+                        data: "minimumAge", title: "@SharedLocalizer["Stock"]", sClass: "text-center", render: function (a, b, data, d) {
+                            if (data.stock >= 5) {
+                                return '<span class="badge badge-success">' + data.stock + '</span>';
+                            }
+                            else {
+                                return '<span class="badge badge-danger">' + data.stock + '</span>';
+                            }
+
+                      }
+                    },
+                    {
+                        data: "isFeatured", title: "@SharedLocalizer["Is featured"]", type: "status", sClass: "text-center", render: function (a, b, data, d) {
+                          if (data.isFeatured == true)
+                          {
+                              return '<i class="fa fa-check text-success"></i>';
+                          }
+                          else
+                          {
+                              return '<i class="fa fa-remove text-danger"></i>';
+                          }
+                      }
+                    },
+                    {
+                        data: "isActive", title: "@SharedLocalizer["IsActive"]", type: "status", sClass: "text-center", render: function (a, b, data, d) {
+                          if (data.isActive == true)
+                          {
+                              return '<i class="fa fa-check text-success"></i>';
+                          }
+                          else
+                          {
+                              return '<i class="fa fa-remove text-danger"></i>';
+                          }
+                      }
+                    },
+                    {
+                      data: null, title: "@SharedLocalizer["Actions"]", className: "text-center", orderable: false, render: function (a, b, data, d) {
+
+                            var actions = '<div class="btn-group btn-hspace">' +
+                                '<button type= "button" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true"><spanclass="icon mdi mdi-chevron-down"></span></button >' +
+                                '<div class="dropdown-menu dropdown-menu-right" >';
+                            actions += '<a class="dropdown-item" href="@Url.Action("Edit", "Product")/' + data.id + '"><i class="fa fa-edit text-warning"></i> @SharedLocalizer["Edit product"]</a>';
+
+                            actions += '<a class="dropdown-item js-delete" href="javascript:void(0)" data-id="' + data.id + '"><i class="fa fa-remove text-danger"></i> @SharedLocalizer["Delete movie"]</a>';
+                          actions += '</div></div>';
+                          return actions;
+                      },
+                    }
+                ],
+                language: {
+                    "sEmptyTable": "@SharedLocalizer["sEmptyTable"]",
+                    "sInfo": "@SharedLocalizer["sInfo"]",
+                    "sInfoEmpty": "@SharedLocalizer["sInfoEmpty"]",
+                    "sInfoFiltered": "@SharedLocalizer["sInfoFiltered"]",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "@SharedLocalizer["sLengthMenu"]",
+                    "sLoadingRecords": "@SharedLocalizer["sLoadingRecords"]",
+                    "sProcessing": "@SharedLocalizer["sProcessing"].",
+                    "sSearch": "@SharedLocalizer["sSearch"]",
+                    "sZeroRecords": "@SharedLocalizer["sZeroRecords"]",
+                    "oPaginate": {
+                        "sFirst": "@SharedLocalizer["sFirst"]",
+                        "sLast": "@SharedLocalizer["sLast"]",
+                        "sNext": "@SharedLocalizer["sNext"]",
+                        "sPrevious": "@SharedLocalizer["sPrevious"]"
+                    },
+                    "oAria": {
+                        "sSortAscending": "@SharedLocalizer["sSortAscending"]",
+                        "sSortDescending": "@SharedLocalizer["sSortDescending"]"
+                    }
+                }
+            })
+            $("img").on("error", function () {
+                $(this).attr("src", "notfound_75.png");
+            });
+        });
+    </script>
+    <!--Delete event-->
+    <script>
+        $(document).on("click", ".js-delete", function () {
+
+            var dataId = $(this).attr("data-id");
+
+            $.confirm({
+                title: '<i class="fa fa-warning"></i> @SharedLocalizer["PleaseConfirm"]',
+                content: '@SharedLocalizer["ToDelete"]',
+                autoClose: 'cancel|10000',
+                type: 'red',
+                closeIcon: true,
+                closeIconClass: 'fa fa-close',
+                buttons: {
+                    cancel: {
+                        text: '@SharedLocalizer["Cancel"]',
+                        keys: ['esc'],
+                        action: function () {
+                        }
+                    },
+                    confirm: {
+                        text: '@SharedLocalizer["Delete"]',
+                        btnClass: 'btn-danger',
+                        keys: ['enter'],
+                        action: function () {
+                            var url = '@Url.Action("Delete")';
+                            $.ajax({
+                                type: "DELETE",
+                                async: false,
+                                url: url,
+                                dataType: "json",
+                                data: {
+                                    id: dataId,
+                                },
+                                success: function (data) {
+                                    table.ajax.reload();
+                                    toastr.success('@SharedLocalizer["DeletedSuccessfully"]');
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    toastr.error('@SharedLocalizer["SmthWentWrong"]');
+                                }
+                            });
+                        }
+                    },
+
+                }
+            });
+        });
+    </script>
+    <!--Notification-->
+    <script>
+        $(function () {
+
+            @if (notification != null)
+            {
+                if (notification.Success)
+                {
+
+                   @:toastr.success('@notification.Message');
+
+                }
+                else
+                {
+                   @:toastr.error('@notification.Message');
+                }
+
+            }
+
+        });
+    </script>
+}

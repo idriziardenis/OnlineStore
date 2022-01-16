@@ -1,0 +1,76 @@
+﻿@model ProductDetailsViewModel
+@{
+    ViewData["Title"] = "Product details";
+}
+<section class="shop-details-area pt-100 pb-100">
+    <div class="container">
+        <div class="row mb-95">
+            <div class="col-xl-7 col-lg-6">
+                <div class="shop-details-img-wrap">
+                    <div class="shop-details-active slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <div class="slick-track" style="opacity: 1; width: 2505px;">
+                                <div class="shop-details-img slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" style="width: 501px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;" tabindex="0">
+                                    <a href="@Model.MainPath" class="popup-image" tabindex="0"><img src="@Model.MainPath" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-5 col-lg-6">
+                <div class="shop-details-content">
+                    @if (Model.Stock > 0)
+                    {
+        <span class="stock-success">In Stock</span> }
+                    else
+                    {
+        <span class="stock-info">Out of Stock</span>}
+
+                    <h2>@Model.Name</h2>
+                    <div class="shop-details-review">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span>- 3 Customer Reviews</span>
+                    </div>
+                    <div class="shop-details-price">
+                        <h2>$@Model.Price</h2>
+                    </div>
+                    <p>@Html.Raw(Model.Descrption)</p>
+
+                    <div class="perched-info">
+                        <div class="cart-plus">
+                            <form action="#">
+                                <div class="cart-plus-minus">
+                                    <input type="text" value="1">
+                                    <div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>
+                                </div>
+                            </form>
+                        </div>
+                        <a href="javascript:void(0)" class="btn add-to-cart" data-id="@Model.Id">ADD TO CART</a>
+                    </div>
+                    <div class="shop-details-bottom">
+
+                        <ul>
+
+                            <li>
+                                <span>CATEGORIES :</span>
+                                <a asp-action="Index" asp-controller="Home" asp-route-categoryId="@Model.CategoryId">@Model.CategoryName</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

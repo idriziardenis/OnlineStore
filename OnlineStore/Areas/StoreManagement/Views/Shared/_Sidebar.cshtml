@@ -26,7 +26,7 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
-            with font-awesome or any other icon font library -->
+    with font-awesome or any other icon font library -->
             <li class="nav-item">
                 <a asp-action="Index" asp-controller="Home" class="nav-link @((action == "index") && controller == "home" ? "active" : "" )">
                     <i class="nav-icon fa fa-tachometer-alt"></i>
@@ -36,16 +36,24 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-action="Index" asp-controller="Movies" class="nav-link @((action == "index" || action == "add" || action == "edit" || action == "details") && (controller == "products") ? "active" : "" ) ">
-                    <i class="nav-icon fa fa-film"></i>
+                <a asp-action="Index" asp-controller="Product" class="nav-link @((action == "index" || action == "add" || action == "edit" || action == "details") && (controller == "product") ? "active" : "" ) ">
+                    <i class="nav-icon fa fa-tag"></i>
                     <p>
                         Products
                     </p>
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-action="Index" asp-controller="Booking" class="nav-link @((action == "index" || action == "add" || action == "edit" || action == "details") && controller == "orders" ? "active" : "" ) ">
-                    <i class="nav-icon fa fa-calendar-day"></i>
+                <a asp-action="Index" asp-controller="Category" class="nav-link @((action == "index" || action == "add" || action == "edit" || action == "details") && (controller == "category") ? "active" : "" ) ">
+                    <i class="nav-icon fa fa-align-justify"></i>
+                    <p>
+                        Categories
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Order" class="nav-link @((action == "index" || action == "add" || action == "edit" || action == "details") && controller == "order" ? "active" : "" ) ">
+                    <i class="nav-icon fa fa-shopping-cart"></i>
                     <p>
                         Orders
                     </p>

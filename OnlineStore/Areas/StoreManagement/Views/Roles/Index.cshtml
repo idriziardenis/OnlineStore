@@ -1,0 +1,197 @@
+﻿@{
+    ViewData["Title"] = SharedLocalizer["Roles"];
+    SuccessResult notification = null;
+    if (ViewBag.Notification != null)
+    {
+        notification = ViewBag.Notification;
+    }
+}
+
+@section Styles{
+    <!-- DataTables -->
+    <link href="~/lib/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="col-sm-12 breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="#">@SharedLocalizer["Home"]</a></li>
+                    <li class="breadcrumb-item active"><a href="#">@SharedLocalizer["Roles"]</a></li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- jquery validation -->
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title"><i class="fa fa-list"></i> &nbsp;&nbsp; @SharedLocalizer["ListOfRoles"]</h3>
+                            </div>
+                            @*<div class="col-md-6">
+                                    <a asp-action="Add" style="float:right;" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> &nbsp;&nbsp; @SharedLocalizer["Add"]</a>
+                                </div>*@
+                        </div>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body">
+                        <table id="Table" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <td>@SharedLocalizer["Id"]</td>
+                                    <td>@SharedLocalizer["Name"]</td>
+                                    @*<td>@SharedLocalizer["Description"]</td>*@
+                                    <td class="text-center">@SharedLocalizer["IsActive"]</td>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    <!-- DataTables -->
+    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //ImageNotAvailable
+            function imgError(image) {
+                image.onerror = "";
+                image.src = "/uploads/notfound/notfound_75.png";
+                return true;
+            }
+
+            $.fn.dataTableExt.oSort["status-asc"] = function (x, y) {
+                var a = x.includes("success");
+                var b = y.includes("success");
+
+                if (a > b) {
+                    return 1;
+                }
+                return -1;
+            }
+            $.fn.dataTableExt.oSort["status-desc"] = function (x, y) {
+                var a = x.includes("success");
+                var b = y.includes("success");
+
+                if (a > b) {
+                    return -1;
+                }
+                return 1;
+            }
+
+            var url = "@Url.Action("GetRolesJson", "Roles")";
+            $("#Table").DataTable({
+                pageLength: 8,
+                responsive: true,
+                autoWidth: false,
+                //"processing": true,
+                //"serverSide": true,
+                //"filter": true,
+                //"orderMulti": false,
+
+                ajax: {
+                    url: url,
+                    dataSrc: ""
+                },
+                columns: [
+                    { data: "id", title: "Id", width: "4%" },
+                    { data: "name", title: "@SharedLocalizer["Name"]", },
+
+                    @*{ data: "description", title: "@SharedLocalizer["Description"]" },*@
+                    {
+                        data: "isstaffrole", title: "@SharedLocalizer["IsStaff"]", type: "status", sClass: "text-center", render: function (a, b, data, d) {
+                            if (data.isstaffrole == true)
+                          {
+                                return '<i class="fa fa-check text-success"></i>';
+                          }
+                          else
+                          {
+                                return '<i class="fa fa-remove text-danger"></i>';
+                          }
+                      }
+                    },
+                ],
+                language: {
+                    "sEmptyTable": "@SharedLocalizer["sEmptyTable"]",
+                    "sInfo": "@SharedLocalizer["sInfo"]",
+                    "sInfoEmpty": "@SharedLocalizer["sInfoEmpty"]",
+                    "sInfoFiltered": "@SharedLocalizer["sInfoFiltered"]",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "@SharedLocalizer["sLengthMenu"]",
+                    "sLoadingRecords": "@SharedLocalizer["sLoadingRecords"]",
+                    "sProcessing": "@SharedLocalizer["sProcessing"].",
+                    "sSearch": "@SharedLocalizer["sSearch"]",
+                    "sZeroRecords": "@SharedLocalizer["sZeroRecords"]",
+                    "oPaginate": {
+                        "sFirst": "@SharedLocalizer["sFirst"]",
+                        "sLast": "@SharedLocalizer["sLast"]",
+                        "sNext": "@SharedLocalizer["sNext"]",
+                        "sPrevious": "@SharedLocalizer["sPrevious"]"
+                    },
+                    "oAria": {
+                        "sSortAscending": "@SharedLocalizer["sSortAscending"]",
+                        "sSortDescending": "@SharedLocalizer["sSortDescending"]"
+                    }
+                }
+            })
+            $("img").on("error", function () {
+                $(this).attr("src", "notfound_75.png");
+            });
+        });
+    </script>
+    <!--Notification-->
+    <script>
+        $(function () {
+
+            @if (notification != null)
+            {
+                if (notification.Success)
+                {
+
+                   @:toastr.success('@notification.Message');
+
+                }
+                else
+                {
+                   @:toastr.error('@notification.Message');
+                }
+
+            }
+
+        });
+    </script>
+}

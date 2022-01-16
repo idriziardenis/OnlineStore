@@ -1,78 +1,215 @@
-﻿<!DOCTYPE html>
+﻿@using OnlineStore.Interfaces
+@inject IUserService userService
+@{ 
+    bool isUserLoggedId = userService.GetUserId() != "";
+} 
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>@ViewData["Title"] - Online Store</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
-    </environment>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/front/img/favicon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- CSS here -->
+    <link rel="stylesheet" href="~/front/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/front/css/animate.min.css">
+    <link rel="stylesheet" href="~/front/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/front/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/front/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/front/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="~/front/css/flaticon.css">
+    <link rel="stylesheet" href="~/front/css/odometer.css">
+    <link rel="stylesheet" href="~/front/css/aos.css">
+    <link rel="stylesheet" href="~/front/css/slick.css">
+    <link rel="stylesheet" href="~/front/css/default.css">
+    <link rel="stylesheet" href="~/front/css/style.css">
+    <link rel="stylesheet" href="~/front/css/responsive.css">
+    <!-- Toastr -->
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="Store" asp-controller="Home" asp-action="Index">Online Store</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Store" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Store" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <!-- preloader  -->
+    <div id="preloader">
+        <div id="ctn-preloader" class="ctn-preloader">
+            <div class="animation-preloader">
+                <div class="spinner"></div>
+                <div class="txt-loading">
+                    <span data-text-preloader="O" class="letters-loading">
+                        O
+                    </span>
+                    <span data-text-preloader="N" class="letters-loading">
+                        N
+                    </span>
+                    <span data-text-preloader="L" class="letters-loading">
+                        L
+                    </span>
+                    <span data-text-preloader="I" class="letters-loading">
+                        I
+                    </span>
+                    <span data-text-preloader="N" class="letters-loading">
+                        N
+                    </span>
+                    <span data-text-preloader="E" class="letters-loading">
+                        E
+                    </span>
+                    <span data-text-preloader="S" class="letters-loading">
+                        S
+                    </span>
+                    <span data-text-preloader="T" class="letters-loading">
+                        T
+                    </span>
+                    <span data-text-preloader="O" class="letters-loading">
+                        O
+                    </span>
+                    <span data-text-preloader="R" class="letters-loading">
+                        R
+                    </span>
+                    <span data-text-preloader="E" class="letters-loading">
+                        E
+                    </span>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <div class="loader">
+                <div class="row">
+                    <div class="col-3 loader-section section-left">
+                        <div class="bg"></div>
+                    </div>
+                    <div class="col-3 loader-section section-left">
+                        <div class="bg"></div>
+                    </div>
+                    <div class="col-3 loader-section section-right">
+                        <div class="bg"></div>
+                    </div>
+                    <div class="col-3 loader-section section-right">
+                        <div class="bg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- preloader end -->
+    <!-- Scroll-top -->
+    <button class="scroll-top scroll-to-target" data-target="html">
+        <i class="fas fa-angle-up"></i>
+    </button>
+    <!-- Scroll-top-end-->
+    @await Html.PartialAsync("_Header.cshtml")
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2018 - Online Store - <a asp-area="Store" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="footer-area footer-style-two">
+        <div class="footer-top pt-65 pb-25">
+            <div class="custom-container-two">
+
+                <div class="row justify-content-between">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget mb-50">
+                            <div class="footer-logo mb-30">
+                                <a href="index.html"><img src="~/front/img/logo/white_logo.png" alt=""></a>
+                            </div>
+                            <div class="footer-text mb-35">
+                                <h5 class="call-us">Got Question? Call us 24/7</h5>
+                                <h6 class="number">458-965-3224</h6>
+                                <p>W898 RTower Stat, Suite 56 Brockland, CA 9622 United States</p>
+                                <a href="#" class="btn"><i class="fas fa-map-marker-alt"></i>view on map</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright-wrap copyright-style-two">
+            <div class="custom-container-two">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="copyright-text">
+                            <p>Copyright © 2022 <a href="#">Online Store</a> All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+    <script src="~/front/js/vendor/jquery-3.5.0.min.js"></script>
+    <script src="~/front/js/popper.min.js"></script>
+    <script src="~/front/js/bootstrap.min.js"></script>
+    <script src="~/front/js/isotope.pkgd.min.js"></script>
+    <script src="~/front/js/imagesloaded.pkgd.min.js"></script>
+    <script src="~/front/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/front/js/owl.carousel.min.js"></script>
+    <script src="~/front/js/jquery.odometer.min.js"></script>
+    <script src="~/front/js/jquery.countdown.min.js"></script>
+    <script src="~/front/js/jquery.appear.js"></script>
+    <script src="~/front/js/slick.min.js"></script>
+    <script src="~/front/js/ajax-form.js"></script>
+    <script src="~/front/js/wow.min.js"></script>
+    <script src="~/front/js/aos.js"></script>
+    <script src="~/front/js/plugins.js"></script>
+    <script src="~/front/js/main.js"></script>
+    <!-- Toastr -->
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
-        </script>
-    </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+            $(document).on("click", ".add-to-cart", function () {
+                if ('@isUserLoggedId' == 'False') {
+                    location.href = '@(Url.Action("Login", "Account"))';
+                }
+                else {
+                    let productId = Number($(this).attr("data-id"));
+                    let quantity = Number($(this).attr("data-quantity"));
+                    if (typeof (quantity) == 'undefined' || quantity == null || quantity == '' || quantity == 0) {
+                        quantity = 1;
+                    }
+                    $.ajax({
+                        url: '@Url.Action("AddToCart", "ShoppingCart")',
+                        method: "POST",
+                        data: {
+                            productId: productId,
+                            quantity: quantity,
+                        },
+                        success: function (data) {
+                            toastr.success('Product added to shopping cart successfully!');
+                            location.reload();
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            toastr.error('Something went wrong!');
+                        }
+                    });
+                }
 
+            })
+            $(document).on("click", ".remove-product", function () {
+                if ('@isUserLoggedId' == 'False') {
+                    location.href = '@(Url.Action("Login", "Account"))';
+                }
+                else {
+                    let productId = Number($(this).attr("data-id"));
+                    $.ajax({
+                        url: '@Url.Action("DeleteItem", "ShoppingCart")',
+                        method: "POST",
+                        data: {
+                            productId: productId
+                        },
+                        success: function (data) {
+                            toastr.success('Product has been removed from cart successfully!');
+                            location.reload();
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            toastr.error('Something went wrong!');
+                        }
+                    });
+                }
+
+            })
+        })
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

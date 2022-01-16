@@ -1,47 +1,112 @@
-﻿<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Blank Page</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Blank Page</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
+﻿@model HomeViewModel
 
-<!-- Main content -->
-<section class="content">
+@{
+    ViewData["Title"] = "Home";
+}
+<!-- slider-area -->
+<section class="third-slider-area" data-background="front/img/slider/slider_bg.jpg" style="background-image: url(&quot;front/img/slider/slider_bg.jpg&quot;);">
+    <div class="custom-container-two">
+        <div class="row">
+            <div class="col-12">
+                <div class="slider-active slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <div class="slick-track" style="opacity: 1; width: 2626px;">
+                            <div class="single-slider slider-bg slick-slide slick-current slick-active" data-background="/front/img/images/banner.png" data-slick-index="0" style="background-image: url(/front/img/images/banner.png); width: 1313px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;" aria-hidden="false" tabindex="0">
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Default box -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Title</h3>
-
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
+                </div>
             </div>
         </div>
-        <div class="card-body">
-            Start creating your amazing application!
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-            Footer
-        </div>
-        <!-- /.card-footer-->
+        @if (Model != null && Model.FeaturedProducts.Any())
+        {
+<div class="row justify-content-center">
+    @foreach (var item in Model.FeaturedProducts)
+    {
+        @await Html.PartialAsync("_ProductItemFeatured", item)
+    }
+</div>}
+
     </div>
-    <!-- /.card -->
-
 </section>
-<!-- /.content -->
+<!-- slider-area-end -->
+<!-- trending-this-week -->
+<section class="trending-this-week-area pt-100 pb-55">
+    <div class="custom-container-two">
+        <div class="row">
+            <div class="col-12">
+                <div class="deal-day-top">
+                    <div class="deal-day-title">
+                        <h4 class="title">Products</h4>
+                    </div>
+                    <div class="view-all-deal">
+                        <a href="#"><i class="flaticon-scroll"></i> View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            @if (Model != null && Model.Products.Any())
+            {
+@foreach (var item in Model.Products)
+{
+@await Html.PartialAsync("_ProductItem", item)                }            }
+        </div>
+    </div>
+</section>
+<!-- trending-this-week-end -->
+<!-- core-features -->
+<section class="core-features-area core-features-style-two">
+    <div class="container">
+        <div class="core-features-border">
+            <div class="row justify-content-center">
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="core-features-item mb-50">
+                        <div class="core-features-icon">
+                            <img src="~/front/img/icon/core_features01.png" alt="">
+                        </div>
+                        <div class="core-features-content">
+                            <h6>Free Shipping On Over $ 50</h6>
+                            <span>Agricultural mean crops livestock</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="core-features-item mb-50">
+                        <div class="core-features-icon">
+                            <img src="~/front/img/icon/core_features02.png" alt="">
+                        </div>
+                        <div class="core-features-content">
+                            <h6>Membership Discount</h6>
+                            <span>Only MemberAgricultural livestock</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="core-features-item mb-50">
+                        <div class="core-features-icon">
+                            <img src="~/front/img/icon/core_features03.png" alt="">
+                        </div>
+                        <div class="core-features-content">
+                            <h6>Money Return</h6>
+                            <span>30 days money back guarantee</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="core-features-item mb-50">
+                        <div class="core-features-icon">
+                            <img src="~/front/img/icon/core_features04.png" alt="">
+                        </div>
+                        <div class="core-features-content">
+                            <h6>Online Support</h6>
+                            <span>30 days money back guarantee</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- core-features-end -->

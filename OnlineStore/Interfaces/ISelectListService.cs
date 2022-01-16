@@ -8,6 +8,7 @@ namespace OnlineStore.Interfaces
 {
     public interface ISelectListService
     {
-        IEnumerable<KeyValueItem> GetGendersKeysValues();
+        IEnumerable<KeyValueItem> GetGendersKeysValues(string man, string woman);
+        IEnumerable<KeyValueItem> GetCategoriesKeysValues();
     }
 }
