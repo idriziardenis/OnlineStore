@@ -33,6 +33,9 @@
                                 @if (SignInManager.IsSignedIn(User))
                                 {
                                     <a href="#"><i class="flaticon-user"></i>@userService.GetFullName()</a>
+                                    <form asp-action="Logout" asp-controller="Account">
+                                        <button type="submit">Logout</button>
+                                    </form>
                                 }
                                 else
                                 {

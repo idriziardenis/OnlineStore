@@ -1,5 +1,4 @@
-﻿using OnlineStore.Extensions;
-using OnlineStore.Areas.Store.Models;
+﻿using OnlineStore.Areas.Store.Models;
 using OnlineStore.Areas.Store.Models.AccountViewModels;
 using OnlineStore.Interfaces;
 using Microsoft.AspNetCore.Authentication;
